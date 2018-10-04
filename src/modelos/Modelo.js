@@ -9,12 +9,23 @@ class Modelo {
         this.alto = this.imagen.height;
     }
 
+    estaEnPantalla (){
+        if ( (this.x - gameLayer.scrollX) - this.ancho/2 <= 480 &&
+            (this.x - gameLayer.scrollX) + this.ancho/2 >= 0 &&
+            this.y - this.alto/2 <= 320 &&
+            this.y + this.alto/2 >= 0 ){
+            return true;
+        }
+        return false;
+    }
+
     dibujar (scrollX){
         scrollX = scrollX || 0;
         contexto.drawImage(this.imagen,
             this.x - this.imagen.width/2 - scrollX,
             this.y - this.imagen.height/2);
     }
+
 
     colisiona (modelo){
         var colisiona = false;
@@ -29,16 +40,5 @@ class Modelo {
         }
         return colisiona;
     }
-
-    estaEnPantalla (){
-        if ( (this.x - gameLayer.scrollX) - this.ancho/2 <= 480 &&
-            (this.x - gameLayer.scrollX) + this.ancho/2 >= 0 &&
-            this.y - this.alto/2 <= 320 &&
-            this.y + this.alto/2 >= 0 ){
-            return true;
-        }
-        return false;
-    }
-
 
 }

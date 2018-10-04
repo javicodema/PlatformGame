@@ -1,10 +1,14 @@
-// Lista re recursos a precargar
+// Precargado de recursos
+
+// CUIDADO CON EL disparo_jugador
 var imagenes = {
     jugador : "res/jugador.png",
     fondo : "res/fondo.png",
     enemigo : "res/enemigo.png",
     enemigo_movimiento : "res/enemigo_movimiento.png",
-    disparo_jugador : "res/disparo_jugador.png",
+    disparo_jugador : "res/disparo_jugador2.png",
+
+
     disparo_enemigo : "res/disparo_enemigo.png",
     icono_puntos : "res/icono_puntos.png",
     icono_vidas : "res/icono_vidas.png",
@@ -18,6 +22,7 @@ var imagenes = {
     jugador_disparando_izquierda : "res/jugador_disparando_izquierda.png",
     jugador_saltando_derecha : "res/jugador_saltando_derecha.png",
     jugador_saltando_izquierda : "res/jugador_saltando_izquierda.png",
+    enemigo_correr_izquierda : "res/enemigo_correr_izquierda.png",
     enemigo_morir : "res/enemigo_morir.png",
     bloque_tierra : "res/bloque_tierra.png",
     bloque_metal : "res/bloque_metal.png",
@@ -32,7 +37,6 @@ var imagenes = {
     mensaje_como_jugar : "res/mensaje_como_jugar.png",
     mensaje_ganar : "res/mensaje_ganar.png",
     mensaje_perder : "res/mensaje_perder.png",
-
 };
 
 var rutasImagenes = Object.values(imagenes);

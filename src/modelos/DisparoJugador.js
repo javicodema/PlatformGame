@@ -5,7 +5,9 @@ class DisparoJugador extends Modelo {
         this.vx = 9;
     }
 
-    actualizar (){
+    actualizar(){
+
     }
+
 
 }

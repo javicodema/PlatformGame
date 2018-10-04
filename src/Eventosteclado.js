@@ -4,7 +4,7 @@ window.addEventListener('keydown', onKeyDown, false);
 window.addEventListener('keyup', onKeyUp, false);
 
 function onKeyDown( event) {
-    console.log("onKeyDown")
+    entrada = entradas.teclado;
     // agregar la tecla pulsada si no estaba
     var posicion = teclas.indexOf(event.keyCode);
     if ( posicion == -1 ) {
@@ -12,6 +12,7 @@ function onKeyDown( event) {
         switch ( event.keyCode ){
             case 32:
                 controles.disparo = true;
+                controles.continuar = true;
                 break;
             case 38:
                 controles.moverY = 1;
@@ -29,15 +30,16 @@ function onKeyDown( event) {
     }
 }
 
-
 function onKeyUp( event) {
     // sacar la tecla pulsada
     var posicion = teclas.indexOf(event.keyCode);
     teclas.splice( posicion, 1);
+    console.log("Tecla levantada");
 
     switch ( event.keyCode ){
         case 32:
             controles.disparo = false;
+            controles.continuar = false;
             break;
         case 38:
             if ( controles.moverY == 1 ){
@@ -51,11 +53,13 @@ function onKeyUp( event) {
             break;
         case 39:
             if ( controles.moverX == 1 ){
+                console.log("Cambiar moverX = 0")
                 controles.moverX = 0;
             }
             break;
         case 37:
             if ( controles.moverX == -1 ){
+                console.log("Cambiar moverX = 0")
                 controles.moverX = 0;
             }
             break;

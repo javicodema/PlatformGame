@@ -2,24 +2,7 @@ class Fondo extends Modelo {
 
     constructor(rutaImagen, x, y) {
         super(rutaImagen, x, y)
-    }
-
-    dibujar(){
-        super.dibujar();
-
-        if ( this.fondoAux != null ) {
-            // hueco por la izquierda
-            if ( this.x - this.ancho/2 > 0){
-                // pintar auxiliar por la izquierda
-                this.fondoAux.x = this.x - this.ancho;
-            }
-            // hueco por la derecha
-            if (this.x + this.ancho/2 < 480){
-                // pintar auxiliar por la derecha
-                this.fondoAux.x =this.x + this.ancho;
-            }
-            this.fondoAux.dibujar();
-        }
+        this.vx = 0;
     }
 
 
@@ -42,8 +25,29 @@ class Fondo extends Modelo {
                 // vuelve a la parte izquierda
                 this.x = 0 - this.ancho / 2;
             }
+
         }
     }
 
+    dibujar(scrollX){
+        scrollX = scrollX || 0;
+        super.dibujar(scrollX);
+
+        if ( this.fondoAux != null ) {
+            // hueco por la izquierda
+            if ( this.x - this.ancho/2 > 0){
+                // pintar auxiliar por la izquierda
+                this.fondoAux.x = this.x - this.ancho;
+            }
+            // hueco por la derecha
+            if (this.x + this.ancho/2 < 480){
+                // pintar auxiliar por la derecha
+                this.fondoAux.x =this.x + this.ancho;
+            }
+            this.fondoAux.dibujar(scrollX);
+        }
+
+
+    }
 
 }

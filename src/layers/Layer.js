@@ -13,7 +13,7 @@ class Layer {
 
     }
 
-    // Para capas con elementos táctiles
+    // Para capas con elementos táctciles
     // Calcula en que botón caen las pulsaciones
     calcularPulsaciones(pulsaciones){
 

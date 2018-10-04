@@ -1,8 +1,7 @@
 class Animacion {
 
     constructor(imagenSrc, modeloAncho, modeloAlto, velocidadRefresco, framesTotales, callback) {
-
-        // Nuevo para animaciones finitas
+        // Nuevo
         this.callback = callback;
 
         this.imagen = new Image();
@@ -44,7 +43,6 @@ class Animacion {
                     this.frameActual = 0;
                 }
             }
-
         }
         // actualizar el rectangulo (siguiente frame)
         this.rectanguloDibujo.x = this.frameActual * this.frameAncho;
