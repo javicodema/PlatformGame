@@ -38,7 +38,8 @@ var imagenes = {
     mensaje_ganar : "res/mensaje_ganar.png",
     mensaje_perder : "res/mensaje_perder.png",
     recolectable:"res/recolectable.png",
-    salvado:"res/suelo_2.png"
+    salvado:"res/suelo_2.png",
+    tnt:"res/tnt.jpg"
 };
 
 var rutasImagenes = Object.values(imagenes);

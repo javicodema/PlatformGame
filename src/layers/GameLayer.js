@@ -24,6 +24,8 @@ class GameLayer extends Layer {
         this.bloqueMoviles=[];
         this.bloquesSalvado=[];
         this.recolectables = [];
+        this.bloqueDestruible=[];
+        this.tiempoDestrucción=0;
         this.fondoPuntos =
             new Fondo(imagenes.icono_puntos, 480*0.85,320*0.05);
 
@@ -77,6 +79,7 @@ class GameLayer extends Layer {
                 this.jugador.saltar(true);
             }
         }
+
         for (var i=0; i < this.bloquesSalvado.length; i++){
             if(this.jugador.colisiona(this.bloquesSalvado[i])){
                 this.xSalvada=this.bloquesSalvado[i].x;
@@ -154,6 +157,16 @@ class GameLayer extends Layer {
 
                 }
             }
+            for (var k=0; k < this.bloqueDestruible.length; k++){
+                if(this.disparosJugador[i].colisiona(this.bloqueDestruible[k])){
+                    this.espacio
+                        .eliminarCuerpoDinamico(this.disparosJugador[i]);
+                    this.disparosJugador.splice(i, 1);
+                    this.espacio.eliminarCuerpoEstatico(this.bloqueDestruible[k]);
+                    this.bloqueDestruible.splice(k,1);
+
+                }
+            }
         }
 
         // Enemigos muertos fuera del juego
@@ -218,6 +231,9 @@ class GameLayer extends Layer {
         }
         for (var i=0; i < this.recolectables.length; i++){
             this.recolectables[i].dibujar(this.scrollX, this.scrollY);
+        }
+        for (var i=0; i < this.bloqueDestruible.length; i++){
+            this.bloqueDestruible[i].dibujar(this.scrollX, this.scrollY);
         }
         for (var i=0; i < this.disparosJugador.length; i++) {
             this.disparosJugador[i].dibujar(this.scrollX, this.scrollY);
@@ -359,6 +375,13 @@ class GameLayer extends Layer {
 
     cargarObjetoMapa(simbolo, x, y){
         switch(simbolo) {
+            case "U":
+                var bloque = new Bloque(imagenes.tnt, x,y);
+                bloque.y = bloque.y - bloque.alto/2;
+                // modificación para empezar a contar desde el suelo
+                this.bloqueDestruible.push(bloque);
+                this.espacio.agregarCuerpoEstatico(bloque);
+                break;
             case "A":
                 var bloque = new Bloque(imagenes.salvado, x,y);
                 bloque.y = bloque.y - bloque.alto/2;
