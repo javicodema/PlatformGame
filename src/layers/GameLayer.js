@@ -4,6 +4,8 @@ class GameLayer extends Layer {
         super();
         this.mensaje = new Boton(imagenes.mensaje_como_jugar, 480/2, 320/2);
         this.pausa = true;
+        this.xSalvada=-1;
+        this.ySalvada=-1;
         this.iniciar();
     }
 
@@ -18,10 +20,19 @@ class GameLayer extends Layer {
         this.scrollX = 0;
         this.scrollY = 0;
         this.bloques = [];
+        this.bloqueSaltos=[];
+        this.bloqueMoviles=[];
+        this.bloquesSalvado=[];
+        this.recolectables = [];
         this.fondoPuntos =
             new Fondo(imagenes.icono_puntos, 480*0.85,320*0.05);
 
         this.puntos = new Texto(0,480*0.9,320*0.07 );
+
+        this.fondoRecol =
+            new Fondo(imagenes.icono_recolectable, 480*0.15,320*0.07);
+
+        this.recols = new Texto(0,480*0.2,320*0.07 );
 
         this.jugador = new Jugador(50, 50);
         this.fondo = new Fondo(imagenes.fondo_2,480*0.5,320*0.5);
@@ -40,6 +51,8 @@ class GameLayer extends Layer {
 
         if ( this.copa.colisiona(this.jugador)){
             nivelActual++;
+            this.xSalvada=-1;
+            this.ySalvada=-1;
             if (nivelActual > nivelMaximo){
                 nivelActual = 0;
             }
@@ -58,6 +71,22 @@ class GameLayer extends Layer {
         this.fondo.vx = -1;
         this.fondo.actualizar();
         this.jugador.actualizar();
+
+        for (var i=0; i < this.bloqueSaltos.length; i++){
+            if(this.jugador.colisiona(this.bloqueSaltos[i])&&(this.jugador.y+15)<this.bloqueSaltos[i].y){
+                this.jugador.saltar(true);
+            }
+        }
+        for (var i=0; i < this.bloquesSalvado.length; i++){
+            if(this.jugador.colisiona(this.bloquesSalvado[i])){
+                this.xSalvada=this.bloquesSalvado[i].x;
+                this.ySalvada=this.bloquesSalvado[i].y;
+            }
+        }
+
+        for (var i=0; i < this.bloqueMoviles.length; i++){
+            this.bloqueMoviles[i].actualizar(this.scrollX, this.scrollY);
+        }
 
         // Eliminar disparos sin velocidad
         for (var i=0; i < this.disparosJugador.length; i++){
@@ -84,6 +113,9 @@ class GameLayer extends Layer {
         for (var i=0; i < this.enemigos.length; i++){
             this.enemigos[i].actualizar();
         }
+        for (var i=0; i < this.recolectables.length; i++){
+            this.recolectables[i].actualizar();
+        }
         for (var i=0; i < this.disparosJugador.length; i++) {
             this.disparosJugador[i].actualizar();
         }
@@ -95,6 +127,15 @@ class GameLayer extends Layer {
                 if (this.jugador.vidas <= 0){
                     this.iniciar();
                 }
+            }
+        }
+
+        for (var i=0; i < this.recolectables.length; i++){
+            if ( this.jugador.colisiona(this.recolectables[i])){
+                this.recols.valor++;
+                this.espacio
+                    .eliminarCuerpoDinamico(this.recolectables[i]);
+                this.recolectables.splice(i,1);
             }
         }
         // colisiones , disparoJugador - Enemigo
@@ -165,6 +206,19 @@ class GameLayer extends Layer {
         for (var i=0; i < this.bloques.length; i++){
             this.bloques[i].dibujar(this.scrollX, this.scrollY);
         }
+
+        for (var i=0; i < this.bloqueSaltos.length; i++){
+            this.bloqueSaltos[i].dibujar(this.scrollX, this.scrollY);
+        }
+        for (var i=0; i < this.bloqueMoviles.length; i++){
+            this.bloqueMoviles[i].dibujar(this.scrollX, this.scrollY);
+        }
+        for (var i=0; i < this.bloquesSalvado.length; i++){
+            this.bloquesSalvado[i].dibujar(this.scrollX, this.scrollY);
+        }
+        for (var i=0; i < this.recolectables.length; i++){
+            this.recolectables[i].dibujar(this.scrollX, this.scrollY);
+        }
         for (var i=0; i < this.disparosJugador.length; i++) {
             this.disparosJugador[i].dibujar(this.scrollX, this.scrollY);
         }
@@ -175,6 +229,8 @@ class GameLayer extends Layer {
         }
         this.fondoPuntos.dibujar();
         this.puntos.dibujar();
+        this.fondoRecol.dibujar();
+        this.recols.dibujar();
         if ( !this.pausa && entrada == entradas.pulsaciones) {
             this.botonDisparo.dibujar();
             this.botonSalto.dibujar();
@@ -266,7 +322,7 @@ class GameLayer extends Layer {
 
         // Eje Y
         if ( controles.moverY > 0 ){
-            this.jugador.saltar();
+            this.jugador.saltar(false);
             //controles.moverY = 0;
 
         } else if ( controles.moverY < 0 ){
@@ -303,6 +359,35 @@ class GameLayer extends Layer {
 
     cargarObjetoMapa(simbolo, x, y){
         switch(simbolo) {
+            case "A":
+                var bloque = new Bloque(imagenes.salvado, x,y);
+                bloque.y = bloque.y - bloque.alto/2;
+                // modificación para empezar a contar desde el suelo
+                this.bloquesSalvado.push(bloque);
+                this.espacio.agregarCuerpoDinamico(bloque);
+                break;
+            case "Y":
+                var bloque = new Bloque(imagenes.bloque_fondo_muro, x,y);
+                bloque.y = bloque.y - bloque.alto/2;
+                // modificación para empezar a contar desde el suelo
+                this.bloqueSaltos.push(bloque);
+                this.espacio.agregarCuerpoEstatico(bloque);
+                break;
+            case "X":
+                var bloque = new BloqueMovil(imagenes.bloque_metal, x,y);
+                bloque.y = bloque.y - bloque.alto/2;
+                // modificación para empezar a contar desde el suelo
+                this.bloqueMoviles.push(bloque);
+                this.espacio.agregarCuerpoDinamico(bloque);
+                this.espacio.agregarCuerpoEstatico(bloque);
+                break;
+            case "R":
+                var bloque = new Recolectable(x,y);
+                bloque.y = bloque.y - bloque.alto/2;
+                // modificación para empezar a contar desde el suelo
+                this.recolectables.push(bloque);
+                this.espacio.agregarCuerpoDinamico(bloque);
+                break;
             case "C":
                 this.copa = new Bloque(imagenes.copa, x,y);
                 this.copa.y = this.copa.y - this.copa.alto/2;
@@ -317,7 +402,8 @@ class GameLayer extends Layer {
                 this.espacio.agregarCuerpoDinamico(enemigo);
                 break;
             case "1":
-                this.jugador = new Jugador(x, y);
+                if(this.xSalvada==-1) this.jugador = new Jugador(x, y);
+                else this.jugador = new Jugador(this.xSalvada, this.ySalvada);
                 // modificación para empezar a contar desde el suelo
                 this.jugador.y = this.jugador.y - this.jugador.alto/2;
                 this.espacio.agregarCuerpoDinamico(this.jugador);

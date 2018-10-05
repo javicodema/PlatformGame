@@ -10,6 +10,8 @@ class Jugador extends Modelo {
         this.vx = 0; // velocidadX
         this.vy = 0; // velocidadY
 
+
+
         // Animaciones
         this.aDispararDerecha = new Animacion(imagenes.jugador_disparando_derecha,
             this.ancho, this.alto, 6, 4, this.finAnimacionDisparar.bind(this) );
@@ -41,9 +43,10 @@ class Jugador extends Modelo {
     }
 
 
-    saltar(){
+    saltar(plataforma){
         if ( !this.enElAire ) {
-            this.vy = -16;
+            if(plataforma) this.vy=-22;
+            else this.vy = -16;
             this.enElAire = true;
         }
     }
