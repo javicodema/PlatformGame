@@ -45,6 +45,7 @@ class Enemigo extends Modelo {
             }
 
             if (this.fueraPorDerecha ){
+                console.log("fueradcha")
                 // mover hacia la izquierda vx negativa
                 if ( this.vxInteligencia > 0){
                     this.vxInteligencia = this.vxInteligencia * -1;
@@ -52,6 +53,7 @@ class Enemigo extends Modelo {
                 this.vx = this.vxInteligencia;
             }
             if (this.fueraPorIzquierda ){
+                console.log("fueraIzqa")
                 // mover hacia la derecha vx positiva
                 if ( this.vxInteligencia < 0){
                     this.vxInteligencia = this.vxInteligencia * -1;

@@ -25,7 +25,6 @@ class GameLayer extends Layer {
         this.bloquesSalvado=[];
         this.recolectables = [];
         this.bloqueDestruible=[];
-        this.tiempoDestrucción=0;
         this.fondoPuntos =
             new Fondo(imagenes.icono_puntos, 480*0.85,320*0.05);
 
@@ -205,7 +204,6 @@ class GameLayer extends Layer {
             }
         }
 
-        // limite derecha
         if ( this.jugador.y < this.anchoMapa - 320 * 0.3 ) {
             if (this.jugador.y - this.scrollY > 320 * 0.7) {
                 this.scrollY = this.jugador.y - 320 * 0.7;
